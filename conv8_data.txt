@@ -4,5 +4,9 @@ breaks:
 {'4': 47, '3': 15, '1': 200, '0': 8, '2': 22}
 disfs:
 {'f': 16, 'pr': 9, 'ps': 19, 'e': 6, 'c': 4, 'rs': 4, '%r': 2, 'psw': 1}
-tones:
+cues:
 {'ps': 85, 'jp': 57, 'pr': 6.5}
+cues for each type of break:
+{'0': {'pr': 0, 'jp': 0, 'ps': 1}, '1': {'pr': 7.5, 'jp': 2, 'ps': 9}, '4': {'pr': 7.5, 'jp': 44, 'ps': 47}, '2': {'pr': 9, 'jp': 4, 'ps': 17}, '3': {'pr': 8, 'jp': 9, 'ps': 14}}
+cues for each type of boundary tones:
+{'L-L%': {'pr': 2, 'jp': 16, 'ps': 17}, 'H-L%': {'pr': 0, 'jp': 3, 'ps': 3}, 'H-H%': {'pr': 2, 'jp': 16, 'ps': 17}, '!H-L%': {'pr': 0, 'jp': 0, 'ps': 0}, 'L-H%': {'pr': 3.5, 'jp': 9, 'ps': 10}}

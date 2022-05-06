@@ -1,6 +1,8 @@
 from dis import dis
 from string import digits
 from textgrid import *
+import numpy as np
+import matplotlib.pyplot as plt
 
 EPSILON = 0.1 #error tolerance in time (s) for when two labels should be aligned but did not use auto-align
 
@@ -148,16 +150,32 @@ for i in range(len(filenames)):
     
     f = open(filenames[i][0:5]+'_data.txt','w')
 
-    f.write('tones:\n'+str(count_tone_labels(tones_list,i))+'\n')
+    tones_dict = count_tone_labels(tones_list,i)
+    f.write('tones:\n'+str(tones_dict)+'\n')
 
     breaks_disfs = count_break_disf_labels(breaks_list,i)
-    f.write('breaks:\n'+str(breaks_disfs[0])+'\n')
-    f.write('disfs:\n'+str(breaks_disfs[1])+'\n')
+    breaks_dict = breaks_disfs[0]
+    disfs_dict = breaks_disfs[1]
 
-    f.write('cues:\n'+str(count_cue_labels(cues_list,i))+'\n')
+    f.write('breaks:\n'+str(breaks_dict)+'\n')
+    f.write('disfs:\n'+str(disfs_dict)+'\n')
+
+    cues_dict = count_cue_labels(cues_list,i)
+    f.write('cues:\n'+str(cues_dict)+'\n')
 
     f.write('cues for each type of break:\n'+str(count_cues_for_breaks(cues_list,breaks_list))+'\n')
 
     f.write('cues for each type of boundary tones:\n'+str(count_cues_for_tones(cues_list,tones_list))+'\n')
 
+    all_elementary_dicts = {'tones':tones_dict, 'cues':cues_dict, 'breaks':breaks_dict, 'disfs':disfs_dict}
+
+    for tier,tier_dict in all_elementary_dicts.items():
+        #alphabetized
+        alpha_tier = sorted(tier_dict.items())
+        print(alpha_tier)
+        plt.bar(range(len(alpha_tier)), [x[1] for x in alpha_tier], align='center')
+        plt.xticks(range(len(alpha_tier)), [x[0] for x in alpha_tier])
+
+        plt.savefig("./figs/"+filenames[i][0:5]+'_'+tier)
+        plt.clf()
     f.close()

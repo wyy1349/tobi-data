@@ -163,19 +163,41 @@ for i in range(len(filenames)):
     cues_dict = count_cue_labels(cues_list,i)
     f.write('cues:\n'+str(cues_dict)+'\n')
 
-    f.write('cues for each type of break:\n'+str(count_cues_for_breaks(cues_list,breaks_list))+'\n')
-
-    f.write('cues for each type of boundary tones:\n'+str(count_cues_for_tones(cues_list,tones_list))+'\n')
+    breaks_cues_cond = count_cues_for_breaks(cues_list,breaks_list)
+    f.write('cues for each type of break:\n'+str(breaks_cues_cond)+'\n')
+    tones_cues_cond = count_cues_for_tones(cues_list,tones_list)
+    f.write('cues for each type of boundary tones:\n'+str(tones_cues_cond)+'\n')
 
     all_elementary_dicts = {'tones':tones_dict, 'cues':cues_dict, 'breaks':breaks_dict, 'disfs':disfs_dict}
+    conditional_cue_dicts = {'tones':tones_cues_cond,'breaks':breaks_cues_cond}
 
     for tier,tier_dict in all_elementary_dicts.items():
         #alphabetized
         alpha_tier = sorted(tier_dict.items())
-        print(alpha_tier)
+        #print(alpha_tier)
+        plt.title(filenames[i][0:5]+' '+tier)
+        plt.xlabel(tier)
+        plt.ylabel("count")
         plt.bar(range(len(alpha_tier)), [x[1] for x in alpha_tier], align='center')
         plt.xticks(range(len(alpha_tier)), [x[0] for x in alpha_tier])
 
         plt.savefig("./figs/"+filenames[i][0:5]+'_'+tier)
         plt.clf()
+    
+    for tier,tier_dict in conditional_cue_dicts.items():
+        for label,label_dict in tier_dict.items(): #for each individual label and the three cues
+            plt.title(filenames[i][0:5]+' cues at or near '+label+' '+tier)
+            plt.xlabel("cues")
+            plt.ylabel("count")
+            alpha_cues = sorted(label_dict.items())
+            plt.bar(range(len(alpha_cues)), [x[1] for x in alpha_cues], align='center')
+            plt.xticks(range(len(alpha_cues)), [x[0] for x in alpha_cues])
+            try:
+                plt.axhline(all_elementary_dicts[tier][label])
+            except:
+                plt.axhline(0)
+            plt.savefig("./figs/"+filenames[i][0:5]+'_cues_cond_'+label)
+            plt.clf()
+
+
     f.close()
